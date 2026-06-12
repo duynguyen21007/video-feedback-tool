@@ -21,7 +21,7 @@ Base your feedback tone, structure, and length strictly on the following guideli
 - [Fluency]: Comment on their pace, pauses, and flow. Suggest one actionable way to improve fluency (e.g., "Practising more spontaneous speaking would help improve your fluency...").
 - [Grammar]: Evaluate grammatical accuracy and the mix of simple/complex structures. Suggest one specific grammatical pattern to practice (e.g., "Increasing your use of conditional sentences and participle clauses would strengthen...").
 - [Lexical]: Assess vocabulary appropriateness. Provide exactly 4-5 specific, advanced phrase or idiom suggestions related to the topic that the student could incorporate (e.g., "You could incorporate phrases such as [phrase 1], [phrase 2], [phrase 3], and [phrase 4]").
-- [Pronunciation]: Address clarity, stress, and intonation. Give one specific tip to sound more engaging and natural (e.g., "Improving rhythm and intonation would make your delivery sound more engaging.").
+- [Pronunciation]: Evaluate clarity, stress, and intonation. End with 1 tip to sound more natural. CRITICAL: You MUST identify 2-4 specific words the student mispronounced. List them at the very end of this section, separated by newlines (\n), and you MUST capitalize the exact letter, vowel, or syllable that was mispronounced (e.g., bAlAnce, vehIcle, changED, reSult).
 
 Return ONLY the raw JSON object, no markdown code blocks around it. Ensure the scores are numbers (e.g., 5.0, 5.5, 6.0, up to 9.0).
 `;
