@@ -29,8 +29,9 @@ Return ONLY the raw JSON object, no markdown code blocks around it. Ensure the s
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === "generate_feedback") {
         
-        chrome.storage.local.get(['geminiApiKey'], async (result) => {
+        chrome.storage.local.get(['geminiApiKey', 'geminiModel'], async (result) => {
             const apiKey = result.geminiApiKey;
+            const model = result.geminiModel || 'gemini-1.5-flash';
             if (!apiKey) {
                 sendResponse({ error: "API Key not found. Please click the Extension icon and enter your Gemini API Key in the settings." });
                 return;
@@ -38,7 +39,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
             try {
                 // Call Gemini API
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`;
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
                 
                 const requestBody = {
                     "contents": [
