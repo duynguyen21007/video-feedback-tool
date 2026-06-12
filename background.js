@@ -56,14 +56,34 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                     }
                 };
 
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(requestBody)
-                });
+                let response;
+                let data;
+                let retries = 2; // Try up to 3 times total
+                let delay = 2000; // Start with 2 seconds delay
 
-                const data = await response.json();
-                
+                while (retries >= 0) {
+                    response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(requestBody)
+                    });
+                    
+                    data = await response.json();
+                    
+                    // Check if it's a 503 or high demand error
+                    if (data.error && (response.status === 503 || data.error.message.toLowerCase().includes('high demand'))) {
+                        if (retries > 0) {
+                            console.log(`High demand error. Retrying in ${delay}ms... (${retries} retries left)`);
+                            await new Promise(res => setTimeout(res, delay));
+                            delay *= 2; // Exponential backoff (2s, 4s)
+                            retries--;
+                            continue; // Try again
+                        }
+                    }
+                    // If it's not a retryable error or we ran out of retries, break the loop
+                    break;
+                }
+
                 if (data.error) {
                     throw new Error(data.error.message || "Unknown API Error");
                 }
