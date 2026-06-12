@@ -15,13 +15,13 @@ The feedback MUST strictly follow this JSON format:
 }
 
 IMPORTANT RUBRIC & STYLE GUIDE:
-Base your feedback tone on standard IELTS speaking descriptors. Be constructive, professional, and provide specific examples for improvement:
+Base your feedback tone, structure, and length strictly on the following guidelines. Keep the response concise and constructive (around 2-4 sentences per section). Do not be overly detailed.
 
-- [General]: Provide a warm greeting and an overview of the student's performance. Highlight key strengths and main areas for improvement.
-- [Fluency]: Comment on the speaker's speed, hesitation, coherence, and use of connective devices.
-- [Grammar]: Evaluate grammatical accuracy and the range of simple vs. complex structures. Note specific recurring errors.
-- [Lexical]: Assess the vocabulary range. Suggest 3-5 specific advanced vocabulary words or idioms related to the topic that the student could have used.
-- [Pronunciation]: Address intonation, word stress, and clarity of specific phonemes.
+- [General]: Evaluate task awareness, organization, and emotional expression. Provide a specific connection to the student's response. End with one specific suggestion to improve further (e.g., "To improve further, you could include more detailed descriptions...").
+- [Fluency]: Comment on their pace, pauses, and flow. Suggest one actionable way to improve fluency (e.g., "Practising more spontaneous speaking would help improve your fluency...").
+- [Grammar]: Evaluate grammatical accuracy and the mix of simple/complex structures. Suggest one specific grammatical pattern to practice (e.g., "Increasing your use of conditional sentences and participle clauses would strengthen...").
+- [Lexical]: Assess vocabulary appropriateness. Provide exactly 4-5 specific, advanced phrase or idiom suggestions related to the topic that the student could incorporate (e.g., "You could incorporate phrases such as [phrase 1], [phrase 2], [phrase 3], and [phrase 4]").
+- [Pronunciation]: Address clarity, stress, and intonation. Give one specific tip to sound more engaging and natural (e.g., "Improving rhythm and intonation would make your delivery sound more engaging.").
 
 Return ONLY the raw JSON object, no markdown code blocks around it. Ensure the scores are numbers (e.g., 5.0, 5.5, 6.0, up to 9.0).
 `;
