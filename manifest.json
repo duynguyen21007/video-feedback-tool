@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "Pasall AI IELTS Grader",
+  "version": "1.0",
+  "description": "Automatically grade IELTS speaking videos and fill in feedback on the Pasall portal using Gemini 1.5 Pro.",
+  "permissions": [
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "*://pasall.edu.vn/*",
+    "https://generativelanguage.googleapis.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://pasall.edu.vn/*"],
+      "js": ["content.js"],
+      "css": ["content.css"]
+    }
+  ],
+  "options_page": "options.html",
+  "action": {
+    "default_title": "Pasall AI Grader Options",
+    "default_popup": "options.html"
+  }
+}

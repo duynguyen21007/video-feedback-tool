@@ -1,0 +1,76 @@
+/* content.css */
+#pasall-ai-button {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 9999;
+    background: linear-gradient(135deg, #f84f4f 0%, #d82b2b 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 14px 24px;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(248, 79, 79, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+#pasall-ai-button:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 6px 20px rgba(248, 79, 79, 0.6);
+}
+
+#pasall-ai-button:active {
+    transform: translateY(1px);
+}
+
+#pasall-ai-button .spinner {
+    display: none;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+#pasall-ai-button.loading .icon {
+    display: none;
+}
+
+#pasall-ai-button.loading .spinner {
+    display: block;
+}
+
+/* Toast Notification styling */
+#pasall-ai-toast {
+    position: fixed;
+    bottom: 90px;
+    right: 30px;
+    z-index: 9998;
+    background: #2b2b36;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+#pasall-ai-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
