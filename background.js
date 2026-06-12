@@ -31,7 +31,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         
         chrome.storage.local.get(['geminiApiKey', 'geminiModel'], async (result) => {
             const apiKey = result.geminiApiKey;
-            const model = result.geminiModel || 'gemini-1.5-flash';
+            const model = result.geminiModel || 'gemini-2.5-flash';
             if (!apiKey) {
                 sendResponse({ error: "API Key not found. Please click the Extension icon and enter your Gemini API Key in the settings." });
                 return;
