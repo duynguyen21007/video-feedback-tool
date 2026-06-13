@@ -5,11 +5,11 @@ The feedback MUST strictly follow this JSON format:
 {
   "general": "Greeting and overall impression...",
   "fluency": "Detailed feedback on Fluency and Coherence...",
-  "fluency_score": 6.0,
+  "fluency_score": 6.5,
   "grammar": "Detailed feedback on Grammatical Range and Accuracy...",
-  "grammar_score": 6.0,
+  "grammar_score": 5.5,
   "lexical": "Detailed feedback on Lexical Resource...",
-  "lexical_score": 6.0,
+  "lexical_score": 7.0,
   "pronunciation": "Detailed feedback on Pronunciation...",
   "pronunciation_score": 6.0
 }
@@ -23,7 +23,7 @@ Base your feedback tone, structure, and length strictly on the following guideli
 - [Lexical]: Assess vocabulary appropriateness. Provide exactly 4-5 specific, advanced phrase or idiom suggestions related to the topic that the student could incorporate (e.g., "You could incorporate phrases such as [phrase 1], [phrase 2], [phrase 3], and [phrase 4]").
 - [Pronunciation]: Evaluate clarity, stress, and intonation. End with 1 tip to sound more natural. CRITICAL: You MUST identify the ACTUAL words the student mispronounced in the video. Do not make up words or force a specific number. If their pronunciation is very good, list fewer words or none; if poor, list more. List them at the very end of this section, separated by newlines (\n), and you MUST capitalize the exact letter, vowel, or syllable that was mispronounced (e.g., bAlAnce, vehIcle, changED, reSult).
 
-Return ONLY the raw JSON object, no markdown code blocks around it. Ensure the scores are numbers (e.g., 5.0, 5.5, 6.0, up to 9.0).
+Return ONLY the raw JSON object, no markdown code blocks around it. CRITICAL: You must carefully calculate the scores for each category based on the student's actual performance (from 1.0 to 9.0, in 0.5 increments). Do NOT just use the placeholder scores from the JSON example above.
 `;
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
