@@ -17,6 +17,35 @@ function injectButton() {
     const toast = document.createElement('div');
     toast.id = 'pasall-ai-toast';
     document.body.appendChild(toast);
+
+    // Inject the topic editing modal
+    const modalOverlay = document.createElement('div');
+    modalOverlay.id = 'pasall-ai-modal-overlay';
+    modalOverlay.innerHTML = `
+        <div id="pasall-ai-modal">
+            <h3>Confirm Assignment Topic</h3>
+            <p>We extracted this topic from the page. You can edit it or provide your own if it has changed.</p>
+            <textarea id="pasall-topic-input" placeholder="Enter the assignment topic here..."></textarea>
+            <div class="pasall-ai-modal-actions">
+                <button id="pasall-modal-cancel" class="pasall-ai-btn-secondary">Cancel</button>
+                <button id="pasall-modal-confirm" class="pasall-ai-btn-primary">Confirm & Grade</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modalOverlay);
+
+    document.getElementById('pasall-modal-cancel').addEventListener('click', () => {
+        document.getElementById('pasall-ai-modal-overlay').classList.remove('show');
+    });
+
+    document.getElementById('pasall-modal-confirm').addEventListener('click', () => {
+        document.getElementById('pasall-ai-modal-overlay').classList.remove('show');
+        const finalTopic = document.getElementById('pasall-topic-input').value;
+        const videoUrl = document.getElementById('pasall-ai-button').dataset.videoUrl;
+        if (videoUrl) {
+            startGrading(videoUrl, finalTopic);
+        }
+    });
 }
 
 function showToast(msg) {
@@ -173,6 +202,15 @@ async function handleGradeClick() {
         return;
     }
 
+    // Save videoUrl on the button dataset so we can access it from the modal confirm handler
+    document.getElementById('pasall-ai-button').dataset.videoUrl = videoUrl;
+
+    // Show the modal to confirm/edit the topic
+    document.getElementById('pasall-topic-input').value = topicText;
+    document.getElementById('pasall-ai-modal-overlay').classList.add('show');
+}
+
+function startGrading(videoUrl, topicText) {
     setButtonLoading(true);
     showToast('Analyzing video and generating feedback...');
 
