@@ -71,12 +71,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                     
                     data = await response.json();
                     
-                    // Check if it's a 503 or high demand error
-                    if (data.error && (response.status === 503 || data.error.message.toLowerCase().includes('high demand'))) {
+                    // Check if it's a 503, high demand, or 429 quota exceeded error
+                    if (data.error && (response.status === 503 || response.status === 429 || data.error.message.toLowerCase().includes('high demand') || data.error.message.toLowerCase().includes('quota exceeded'))) {
                         if (retries > 0) {
-                            console.log(`High demand error. Retrying in ${delay}ms... (${retries} retries left)`);
-                            await new Promise(res => setTimeout(res, delay));
-                            delay *= 2; // Exponential backoff (2s, 4s)
+                            // If the error message suggests a retry time, use it (plus a small buffer)
+                            let waitTime = delay;
+                            const match = data.error.message.match(/retry in (\d+\.?\d*)s/);
+                            if (match && match[1]) {
+                                waitTime = Math.ceil(parseFloat(match[1]) * 1000) + 500;
+                            }
+                            console.log(`API Error: ${data.error.message}. Retrying in ${waitTime}ms... (${retries} retries left)`);
+                            await new Promise(res => setTimeout(res, waitTime));
+                            delay *= 2; // Increase base delay for next potential retry
                             retries--;
                             continue; // Try again
                         }
