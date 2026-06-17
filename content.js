@@ -42,8 +42,9 @@ function injectButton() {
         document.getElementById('pasall-ai-modal-overlay').classList.remove('show');
         const finalTopic = document.getElementById('pasall-topic-input').value;
         const videoUrl = document.getElementById('pasall-ai-button').dataset.videoUrl;
+        const studentName = document.getElementById('pasall-ai-button').dataset.studentName;
         if (videoUrl) {
-            startGrading(videoUrl, finalTopic);
+            startGrading(videoUrl, finalTopic, studentName);
         }
     });
 }
@@ -80,28 +81,57 @@ function extractContext() {
     }
 
     // 2. Find Assignment Topic
-    // Based on screenshot, there is a section "Yêu cầu bài tập"
     let topicText = "";
-    // We look for any container containing the text "Yêu cầu bài tập" and grab its sibling/child text
-    const allHeaders = document.querySelectorAll('h3, h4, div, span');
-    let topicContainer = null;
+    const allHeaders = document.querySelectorAll('h3, h4, div, span, p');
+    let exactHeader = null;
+    
+    // Find the innermost element that contains the text
     for (let el of allHeaders) {
-        if (el.textContent.includes('Yêu cầu bài tập')) {
-            // Find the closest container
-            topicContainer = el.parentElement;
-            break;
+        if (el.textContent.includes('Yêu cầu bài tập') && el.children.length === 0) {
+            exactHeader = el;
+            break; // Found the innermost text node wrapper
         }
     }
 
-    if (topicContainer) {
-        topicText = topicContainer.innerText || topicContainer.textContent;
+    if (exactHeader) {
+        // The topic is usually in the next sibling, or the parent's next sibling
+        let nextEl = exactHeader.nextElementSibling;
+        if (!nextEl && exactHeader.parentElement) {
+            nextEl = exactHeader.parentElement.nextElementSibling;
+        }
+        if (nextEl) {
+            topicText = nextEl.innerText || nextEl.textContent;
+        } else {
+            // Fallback: just get parent text and remove the header
+            topicText = exactHeader.parentElement.innerText.replace('Yêu cầu bài tập', '').trim();
+        }
     } else {
-        // Fallback: just grab all text from the left column or any likely candidate
-        // Or if we can't find it, we just send empty.
         topicText = "Unknown topic. Please grade based on the video context.";
     }
 
-    return { videoUrl, topicText };
+    // 3. Find Student Name
+    let studentName = "";
+    for (let el of allHeaders) {
+        if (el.textContent.trim() === 'PHIẾU ĐÁNH GIÁ') {
+            studentName = el.nextElementSibling ? el.nextElementSibling.textContent.trim() : "";
+            if (!studentName && el.parentElement) {
+                const sibling = el.parentElement.nextElementSibling;
+                if (sibling) studentName = sibling.textContent.trim();
+            }
+            break;
+        }
+    }
+    // Try to find it by looking for the blue text below PHIẾU ĐÁNH GIÁ if the exact match fails
+    if (!studentName) {
+        for (let el of allHeaders) {
+            if (el.textContent.includes('PHIẾU ĐÁNH GIÁ') && el.children.length > 0) {
+                 // Sometimes it might be nested
+                 // We will just leave it empty if we can't find it easily, to avoid guessing wrong text.
+            }
+        }
+    }
+
+    return { videoUrl, topicText, studentName };
 }
 
 // Map AI Response to the correct textareas
@@ -195,28 +225,31 @@ function autofillForm(feedbackData) {
 
 async function handleGradeClick() {
     // Get context
-    const { videoUrl, topicText } = extractContext();
+    const { videoUrl, topicText, studentName } = extractContext();
     
     if (!videoUrl) {
         showToast('Error: Could not find a YouTube video on this page.');
         return;
     }
 
-    // Save videoUrl on the button dataset so we can access it from the modal confirm handler
+    // Save videoUrl and studentName on the button dataset so we can access it from the modal confirm handler
     document.getElementById('pasall-ai-button').dataset.videoUrl = videoUrl;
+    if (studentName) {
+        document.getElementById('pasall-ai-button').dataset.studentName = studentName;
+    }
 
     // Show the modal to confirm/edit the topic
     document.getElementById('pasall-topic-input').value = topicText;
     document.getElementById('pasall-ai-modal-overlay').classList.add('show');
 }
 
-function startGrading(videoUrl, topicText) {
+function startGrading(videoUrl, topicText, studentName) {
     setButtonLoading(true);
     showToast('Analyzing video and generating feedback...');
 
     // Send message to background script to call Gemini API
     chrome.runtime.sendMessage(
-        { action: "generate_feedback", videoUrl, topicText },
+        { action: "generate_feedback", videoUrl, topicText, studentName },
         (response) => {
             setButtonLoading(false);
             if (response.error) {

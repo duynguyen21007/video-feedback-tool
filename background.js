@@ -17,7 +17,7 @@ The feedback MUST strictly follow this JSON format:
 IMPORTANT RUBRIC & STYLE GUIDE:
 Base your feedback tone, structure, and length strictly on the following guidelines. Keep the response concise and constructive (around 2-4 sentences per section). Do not be overly detailed.
 
-- [General]: Evaluate task awareness, organization, and emotional expression. Provide a specific connection to the student's response. End with one specific suggestion to improve further (e.g., "To improve further, you could include more detailed descriptions...").
+- [General]: Evaluate task awareness, organization, and emotional expression. Start with a greeting addressing the student by their name (if provided in the prompt, otherwise use a generic greeting like "Hello"). Do NOT make up a name if one is not provided. Provide a specific connection to the student's response. End with one specific suggestion to improve further (e.g., "To improve further, you could include more detailed descriptions...").
 - [Fluency]: Comment on their pace, pauses, and flow. Suggest one actionable way to improve fluency (e.g., "Practising more spontaneous speaking would help improve your fluency...").
 - [Grammar]: Evaluate grammatical accuracy and the mix of simple/complex structures. Suggest one specific grammatical pattern to practice (e.g., "Increasing your use of conditional sentences and participle clauses would strengthen...").
 - [Lexical]: Assess vocabulary appropriateness. Provide exactly 4-5 specific, advanced phrase or idiom suggestions related to the topic that the student could incorporate (e.g., "You could incorporate phrases such as [phrase 1], [phrase 2], [phrase 3], and [phrase 4]").
@@ -47,6 +47,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                             "parts": [
                                 { "text": SYSTEM_PROMPT },
                                 { "text": "Assignment Topic: " + request.topicText },
+                                { "text": "Student Name: " + (request.studentName || "Not provided (Do NOT make up a name)") },
                                 { "text": "Please analyze this YouTube video and grade it: " + request.videoUrl }
                             ]
                         }
