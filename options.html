@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pasall AI Grader - Settings</title>
     <style>
         :root {
-            --primary: #f84f4f; /* Pasall Red */
-            --bg: #1e1e24; /* Dark mode bg matching Pasall */
+            --primary: #f84f4f;
+            /* Pasall Red */
+            --bg: #1e1e24;
+            /* Dark mode bg matching Pasall */
             --surface: #2b2b36;
             --text: #ffffff;
             --text-muted: #a0a0b0;
@@ -118,41 +121,47 @@
             color: var(--primary);
             text-decoration: none;
         }
-        
+
         a:hover {
             text-decoration: underline;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>✨ Pasall AI Grader</h1>
         <p class="subtitle">Configure your Gemini API settings</p>
-        
+
         <div class="form-group">
             <label for="apiKey">Google Gemini API Key</label>
             <input type="password" id="apiKey" placeholder="AIzaSy...">
         </div>
-        
+
         <div class="form-group">
             <label for="modelSelect">AI Model</label>
-            <select id="modelSelect" style="width: 100%; padding: 12px 16px; border-radius: 8px; border: 1px solid #444; background-color: #1a1a20; color: white; font-size: 16px; box-sizing: border-box; outline: none;">
+            <select id="modelSelect"
+                style="width: 100%; padding: 12px 16px; border-radius: 8px; border: 1px solid #444; background-color: #1a1a20; color: white; font-size: 16px; box-sizing: border-box; outline: none;">
                 <option value="gemini-2.5-flash">Gemini 2.5 Flash (Fast)</option>
                 <option value="gemini-2.5-pro">Gemini 2.5 Pro (More accurate)</option>
+                <option value="gemini-3.5-flash">Gemini 3.5 Flash (Fast & Advanced)</option>
+                <option value="gemini-3.1-flash">Gemini 3.1 Flash (Latest Fast)</option>
                 <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Latest)</option>
             </select>
         </div>
-        
+
         <button id="saveBtn">Save Settings</button>
         <div id="status">Settings saved successfully!</div>
 
         <div class="helper-text">
             Don't have an API key? You can get one for free at <br>
             <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a>.<br><br>
-            Your key is stored securely on your local browser and is never sent anywhere except directly to Google for processing.
+            Your key is stored securely on your local browser and is never sent anywhere except directly to Google for
+            processing.
         </div>
     </div>
 
     <script src="options.js"></script>
 </body>
+
 </html>
