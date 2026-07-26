@@ -1,9 +1,9 @@
 // Inject the "Grade with AI" button into the page
 function injectButton() {
-    if (document.getElementById('pasall-ai-button')) return;
+    if (document.getElementById('passion-ai-button')) return;
 
     const btn = document.createElement('button');
-    btn.id = 'pasall-ai-button';
+    btn.id = 'passion-ai-button';
     btn.innerHTML = `
         <span class="icon">✨</span>
         <div class="spinner"></div>
@@ -15,34 +15,34 @@ function injectButton() {
 
     // Also inject toast notification container
     const toast = document.createElement('div');
-    toast.id = 'pasall-ai-toast';
+    toast.id = 'passion-ai-toast';
     document.body.appendChild(toast);
 
     // Inject the topic editing modal
     const modalOverlay = document.createElement('div');
-    modalOverlay.id = 'pasall-ai-modal-overlay';
+    modalOverlay.id = 'passion-ai-modal-overlay';
     modalOverlay.innerHTML = `
-        <div id="pasall-ai-modal">
+        <div id="passion-ai-modal">
             <h3>Confirm Assignment Topic</h3>
             <p>We extracted this topic from the page. You can edit it or provide your own if it has changed.</p>
-            <textarea id="pasall-topic-input" placeholder="Enter the assignment topic here..."></textarea>
-            <div class="pasall-ai-modal-actions">
-                <button id="pasall-modal-cancel" class="pasall-ai-btn-secondary">Cancel</button>
-                <button id="pasall-modal-confirm" class="pasall-ai-btn-primary">Confirm & Grade</button>
+            <textarea id="passion-topic-input" placeholder="Enter the assignment topic here..."></textarea>
+            <div class="passion-ai-modal-actions">
+                <button id="passion-modal-cancel" class="passion-ai-btn-secondary">Cancel</button>
+                <button id="passion-modal-confirm" class="passion-ai-btn-primary">Confirm & Grade</button>
             </div>
         </div>
     `;
     document.body.appendChild(modalOverlay);
 
-    document.getElementById('pasall-modal-cancel').addEventListener('click', () => {
-        document.getElementById('pasall-ai-modal-overlay').classList.remove('show');
+    document.getElementById('passion-modal-cancel').addEventListener('click', () => {
+        document.getElementById('passion-ai-modal-overlay').classList.remove('show');
     });
 
-    document.getElementById('pasall-modal-confirm').addEventListener('click', () => {
-        document.getElementById('pasall-ai-modal-overlay').classList.remove('show');
-        const finalTopic = document.getElementById('pasall-topic-input').value;
-        const videoUrl = document.getElementById('pasall-ai-button').dataset.videoUrl;
-        const studentName = document.getElementById('pasall-ai-button').dataset.studentName;
+    document.getElementById('passion-modal-confirm').addEventListener('click', () => {
+        document.getElementById('passion-ai-modal-overlay').classList.remove('show');
+        const finalTopic = document.getElementById('passion-topic-input').value;
+        const videoUrl = document.getElementById('passion-ai-button').dataset.videoUrl;
+        const studentName = document.getElementById('passion-ai-button').dataset.studentName;
         if (videoUrl) {
             startGrading(videoUrl, finalTopic, studentName);
         }
@@ -50,14 +50,14 @@ function injectButton() {
 }
 
 function showToast(msg) {
-    const toast = document.getElementById('pasall-ai-toast');
+    const toast = document.getElementById('passion-ai-toast');
     toast.textContent = msg;
     toast.classList.add('show');
     setTimeout(() => toast.classList.remove('show'), 4000);
 }
 
 function setButtonLoading(isLoading) {
-    const btn = document.getElementById('pasall-ai-button');
+    const btn = document.getElementById('passion-ai-button');
     const text = btn.querySelector('.text');
     if (isLoading) {
         btn.classList.add('loading');
@@ -138,7 +138,7 @@ function extractContext() {
 function autofillForm(feedbackData) {
     // feedbackData should be a JSON object with keys: general, fluency, grammar, lexical, pronunciation
     
-    // The Pasall portal has textareas for each section. We can try finding them by looking for their labels.
+    // The Passion portal has textareas for each section. We can try finding them by looking for their labels.
     const allLabels = document.querySelectorAll('div, span, label, h4');
     const allInputs = document.querySelectorAll('input[type="number"], input[type="text"]');
 
@@ -233,14 +233,14 @@ async function handleGradeClick() {
     }
 
     // Save videoUrl and studentName on the button dataset so we can access it from the modal confirm handler
-    document.getElementById('pasall-ai-button').dataset.videoUrl = videoUrl;
+    document.getElementById('passion-ai-button').dataset.videoUrl = videoUrl;
     if (studentName) {
-        document.getElementById('pasall-ai-button').dataset.studentName = studentName;
+        document.getElementById('passion-ai-button').dataset.studentName = studentName;
     }
 
     // Show the modal to confirm/edit the topic
-    document.getElementById('pasall-topic-input').value = topicText;
-    document.getElementById('pasall-ai-modal-overlay').classList.add('show');
+    document.getElementById('passion-topic-input').value = topicText;
+    document.getElementById('passion-ai-modal-overlay').classList.add('show');
 }
 
 function startGrading(videoUrl, topicText, studentName) {
